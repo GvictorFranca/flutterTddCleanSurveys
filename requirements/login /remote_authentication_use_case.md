@@ -7,10 +7,10 @@
 4. Sistema entrega os dados da conta do usuario
 
 ## EXCECAO - URL INVALIDA
-1. Sistema retorna uma mensagem de erro inesperado
+1. ✅ Sistema retorna uma mensagem de erro inesperado
 
 ## EXCECAO - DADOS INVALIDOS
-1. Sistema retorna uma mensagem de erro inesperado
+1. ✅ Sistema retorna uma mensagem de erro inesperado
 
 ## EXCECAO - RESPOSTA INVALIDA
 1. Sistema retorna uma mensagem de erro inesperado
