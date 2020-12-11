@@ -16,8 +16,8 @@
 1. Sistema retorna uma mensagem de erro inesperado
 
 ## EXCECAO - FALHA NO SERVIDOR
-1. Sistema retorna uma mensagem de erro inesperado
+1. ✅ Sistema retorna uma mensagem de erro inesperado
 
 ## EXCECAO - CREDENCIAIS INVALIDAS
-1. Sistema retorna uma mensagem de erro inesperado
+1. ✅ Sistema retorna uma mensagem de erro inesperado
 
