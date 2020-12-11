@@ -1,14 +1,10 @@
-import 'package:flutterClean/data/http/http.dart';
-import 'package:flutterClean/data/usecases/usecases.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:faker/faker.dart';
 
-
+import 'package:flutterClean/data/http/http.dart';
+import 'package:flutterClean/data/usecases/usecases.dart';
 import 'package:flutterClean/domain/usecases/usecases.dart';
-
-
-
 
 class HttpClientSpy extends Mock implements HttpClient {}
 
