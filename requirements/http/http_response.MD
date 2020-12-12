@@ -18,7 +18,7 @@
 1. ✅ Internal server error - 500 
 
 > ## EXCECAO - HTTP REQUEST DEU ALGUMA EXCECAO
-1. Internal server error - 500
+1. ✅ Internal server error - 500
 
 > ## EXCECAO - VERBO HTTP INVALIDO
 1. Internal server error - 500
