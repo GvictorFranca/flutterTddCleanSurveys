@@ -1,44 +1,51 @@
 import 'package:flutter/material.dart';
 
+import '../../ui/components/components.dart';
+
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              child: Image.network('https://www.pngfind.com/pngs/m/80-804141_logo-render-png-anime-bleach-logo-transparent-png.png'),
-            ),
-            Text('Login'),
-            Form(child: 
-            Column(
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    icon: Icon(Icons.email)
-                  ),
-                  keyboardType: TextInputType.emailAddress
-                ),
+            LoginHeader(),
+            Headline1(text: 'Login'),
+            Padding(
+              padding: const EdgeInsets.all(32),
+              child: Form(
+                child: Column(
+                  children: [
                     TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    icon: Icon(Icons.email)
-                  ),
-                  obscureText: true,
+                        decoration: InputDecoration(
+                            labelText: 'Email',
+                            icon: Icon(
+                              Icons.email,
+                              color: Theme.of(context).primaryColorLight,
+                            )),
+                        keyboardType: TextInputType.emailAddress),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 32),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            labelText: 'Senha',
+                            icon: Icon(Icons.lock_open_outlined,
+                                color: Theme.of(context).primaryColorLight)),
+                        obscureText: true,
+                      ),
+                    ),
+                    RaisedButton(
+                      onPressed: () {},
+                      child: Text('Entrar'),
+                    ),
+                    FlatButton.icon(
+                        onPressed: null,
+                        icon: Icon(Icons.person),
+                        label: Text('Criar conta'))
+                  ],
                 ),
-                RaisedButton(
-                  onPressed: () {},
-                  child: Text('Entrar'),
-                ),
-                FlatButton.icon(
-                  onPressed: null,
-                  icon: Icon(Icons.person),
-                  label: Text('Criar conta')
-                )
-              ],
-            ),
+              ),
             ),
           ],
         ),
@@ -46,3 +53,4 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+
