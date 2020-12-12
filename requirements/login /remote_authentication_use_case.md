@@ -3,9 +3,8 @@
 ## SUCCESS CASE
 1. ✅ Sistema valida os dados
 2. ✅ Sistema faz uma requisicao para a URL da API de login
-3. Chamar request com body correto
-4. Sistema valida os dados recebidos da API
-5. Sistema entrega os dados da conta do usuario
+3. Sistema valida os dados recebidos da API
+4. Sistema entrega os dados da conta do usuario
 
 ## EXCECAO - URL INVALIDA
 1. ✅ Sistema retorna uma mensagem de erro inesperado
