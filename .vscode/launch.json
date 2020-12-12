@@ -12,9 +12,10 @@
 			"program": "./test/"
 		},
 		{
-			"name": "flutterClean",
+			"name": "Flutter: App",
 			"request": "launch",
-			"type": "dart"
+			"type": "dart",
+			"program": "lib/main/main.dart"
 		}
 	]
 }
