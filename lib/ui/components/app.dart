@@ -16,7 +16,7 @@ class App extends StatelessWidget {
         title: 'Clean',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            primaryColor: primaryColor,
+            primaryColor: primaryColor, 
             primaryColorDark: primaryColorDark,
             primaryColorLight: primaryColorLight,
             accentColor: primaryColor,
