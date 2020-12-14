@@ -16,7 +16,7 @@ class App extends StatelessWidget {
         title: 'Clean',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            primaryColor: primaryColor, 
+            primaryColor: primaryColor,
             primaryColorDark: primaryColorDark,
             primaryColorLight: primaryColorLight,
             accentColor: primaryColor,
@@ -40,6 +40,6 @@ class App extends StatelessWidget {
                 textTheme: ButtonTextTheme.primary,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)))),
-        home: LoginPage());
+        home: LoginPage(null));
   }
 }
