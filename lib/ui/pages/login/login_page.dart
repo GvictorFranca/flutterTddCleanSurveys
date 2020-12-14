@@ -57,10 +57,14 @@ class LoginPage extends StatelessWidget {
                             );
                           }),
                     ),
-                    RaisedButton(
-                      onPressed: null,
-                      child: Text('Entrar'),
-                    ),
+                    StreamBuilder<bool>(
+                        stream: presenter.isFormValidStream,
+                        builder: (context, snapshot) {
+                          return RaisedButton(
+                            onPressed: snapshot.data ? () {} : null,
+                            child: Text('Entrar'),
+                          );
+                        }),
                     FlatButton.icon(
                         onPressed: null,
                         icon: Icon(Icons.person),
