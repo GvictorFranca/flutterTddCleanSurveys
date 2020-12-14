@@ -10,26 +10,13 @@ class LoginHeader extends StatelessWidget {
     return Container(
       height: 240,
       margin: EdgeInsets.only(bottom: 32),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            Theme.of(context).primaryColorLight,
-            Theme.of(context).primaryColorDark
-          ]
-        ),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0,0),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+            offset: Offset(0, 0),
             spreadRadius: 0,
             blurRadius: 4,
-            color: Colors.black
-          )
-        ],
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80))
-      ),
-      child: Image.network('https://www.pngfind.com/pngs/m/80-804141_logo-render-png-anime-bleach-logo-transparent-png.png'),
+            color: Colors.black)
+      ], borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80))),
     );
   }
 }
