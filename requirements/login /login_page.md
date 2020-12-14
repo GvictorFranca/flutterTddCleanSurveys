@@ -1,7 +1,7 @@
 # LOGIN PAGE
 
 ## REGRAS
-1. Os campos devem comecar sem exibir mensagem de erro
+1. ✅ Os campos devem comecar sem exibir mensagem de erro
 2. O botao de fazer login deve comecar desabilitado
 3. Apos digitar algo em um campo, a mensagem de erro so deve sumir se o campo for valido
 4. Validar email quando o uuario digitar no campo
