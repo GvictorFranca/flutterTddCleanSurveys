@@ -61,7 +61,7 @@ class LoginPage extends StatelessWidget {
                         stream: presenter.isFormValidStream,
                         builder: (context, snapshot) {
                           return RaisedButton(
-                            onPressed: snapshot.data ? () {} : null,
+                            onPressed: snapshot.data == true ? () {} : null,
                             child: Text('Entrar'),
                           );
                         }),

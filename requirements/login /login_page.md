@@ -10,9 +10,9 @@
 7. ✅ Validar senha quando o usuario digitar no campo
 8. ✅ Mostrar mensagem de erro se a senha for invalida
 9. ✅ Remover mensagem de erro se a senha for valida
-10. Habilitar o botao de fazer login se todos os campos forem validos
-11. Desabilitar o botao de fazer login se algum campo for invalido
-12. Exibir landing no inicio da acao de login
+10. ✅ Habilitar o botao de fazer login se todos os campos forem validos
+11. ✅  Desabilitar o botao de fazer login se algum campo for invalido
+12. Exibir loading no inicio da acao de login
 13. Autenticar o usuario com email e senha informados no fomulario
 14. Exibir mensagem de erro caso o login falhe
 15. Gravar token do usuario no cache para mante-lo conectado 
