@@ -7,9 +7,9 @@ abstract class Validation {
   String validate({@required String fields, @required String value});
 }
 
-class StreamingLoginPresenter {
+class StreamLoginPresenter {
   final Validation validation;
-  StreamingLoginPresenter({
+  StreamLoginPresenter({
     @required this.validation,
   });
   void validateEmail(String email) {
@@ -20,10 +20,17 @@ class StreamingLoginPresenter {
 class ValidationSpy extends Mock implements Validation {}
 
 void main() {
+  StreamLoginPresenter sut;
+  ValidationSpy validation;
+  String email;
+
+  setUp(() {
+    validation = ValidationSpy();
+    sut = StreamLoginPresenter(validation: validation);
+    email = faker.internet.email();
+  });
+
   test('Should call validation with correct email', () {
-    final validation = ValidationSpy();
-    final sut = StreamingLoginPresenter(validation: validation);
-    final email = faker.internet.email();
     sut.validateEmail(email);
 
     verify(validation.validate(fields: 'email', value: email)).called(1);
