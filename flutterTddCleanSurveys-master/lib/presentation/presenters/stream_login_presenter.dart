@@ -5,6 +5,7 @@ import 'package:flutterClean/presentation/dependencies/validation.dart';
 
 class LoginState {
   String emailError;
+  bool get isFormValid => false;
 }
 
 var _state = LoginState();
@@ -15,6 +16,8 @@ class StreamLoginPresenter {
 
   Stream<String> get emailErrorStream =>
       _controller.stream.map((state) => state.emailError).distinct();
+  Stream<bool> get isFormValidStream =>
+      _controller.stream.map((state) => state.isFormValid).distinct();
 
   StreamLoginPresenter({
     @required this.validation,
