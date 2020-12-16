@@ -23,7 +23,7 @@ class LoginState {
 class StreamLoginPresenter {
   final Authentication authentication;
   final Validation validation;
-  final _controller = StreamController<LoginState>.broadcast();
+  var _controller = StreamController<LoginState>.broadcast();
   var _state = LoginState();
 
   Stream<String> get emailErrorStream =>
@@ -66,5 +66,10 @@ class StreamLoginPresenter {
     }
     _state.isLoading = false;
     _update();
+  }
+
+  void dispose() {
+    _controller?.close();
+    _controller = null;
   }
 }
