@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutterClean/domain/helpers/domain_error.dart';
 import 'package:flutterClean/domain/usecases/usecases.dart';
+import 'package:flutterClean/ui/pages/login/login.dart';
 import 'package:meta/meta.dart';
 import 'package:flutterClean/presentation/dependencies/validation.dart';
 
@@ -20,7 +21,7 @@ class LoginState {
       password != null;
 }
 
-class StreamLoginPresenter {
+class StreamLoginPresenter implements LoginPresenter {
   final Authentication authentication;
   final Validation validation;
   var _controller = StreamController<LoginState>.broadcast();
