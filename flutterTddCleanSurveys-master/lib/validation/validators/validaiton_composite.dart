@@ -1,9 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutterClean/presentation/dependencies/validation.dart';
 import 'package:flutterClean/validation/protocols/protocols.dart';
 import 'package:meta/meta.dart';
 
-class ValidationComposite implements Validation {
+class ValidationComposite extends Equatable implements Validation {
   final List<FieldValidation> validations;
+
+  List get props => [validations];
 
   ValidationComposite(this.validations);
 

@@ -1,7 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutterClean/validation/protocols/protocols.dart';
 
-class RequiredFieldValidation implements FieldValidation {
+class RequiredFieldValidation extends Equatable implements FieldValidation {
   final String field;
+
+  List get props => [field];
 
   RequiredFieldValidation(this.field);
 
