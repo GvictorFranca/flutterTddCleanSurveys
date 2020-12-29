@@ -3,5 +3,5 @@ import 'package:flutterClean/main/factories/factories.dart';
 import 'package:flutterClean/ui/pages/pages.dart';
 
 Widget makeLoginPage() {
-  return LoginPage(makeLoginPresenter());
+  return LoginPage(makeGetXLoginPresenter());
 }
