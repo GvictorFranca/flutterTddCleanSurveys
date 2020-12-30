@@ -16,7 +16,7 @@ class AuthenticationSpy extends Mock implements Authentication {}
 class SaveCurrentAccountSpy extends Mock implements SaveCurrentAccount {}
 
 void main() {
-  GetXLoginPresenter sut;
+  GetxLoginPresenter sut;
   ValidationSpy validation;
   AuthenticationSpy authentication;
   SaveCurrentAccountSpy saveCurrentAccount;
@@ -53,7 +53,7 @@ void main() {
     validation = ValidationSpy();
     authentication = AuthenticationSpy();
     saveCurrentAccount = SaveCurrentAccountSpy();
-    sut = GetXLoginPresenter(
+    sut = GetxLoginPresenter(
         validation: validation,
         authentication: authentication,
         saveCurrentAccount: saveCurrentAccount);
@@ -169,6 +169,16 @@ void main() {
     sut.validatePassword(password);
 
     expectLater(sut.isLoadingStream, emits(true));
+
+    await sut.auth();
+  });
+
+  test('Should change page on success sucess', () async {
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+
+    sut.navigateToStream
+        .listen(expectAsync1((page) => expect(page, '/surveys')));
 
     await sut.auth();
   });

@@ -32,11 +32,13 @@ void main() {
     validation2 = FieldValidationSpy();
     when(validation2.field).thenReturn('any_field');
     mockValidation2(null);
+    validation3 = FieldValidationSpy();
     when(validation3.field).thenReturn('any_field');
     mockValidation3(null);
     sut = ValidationComposite([validation1, validation2, validation3]);
   });
-  test('Should return null if all validations returns null or empity', () {
+
+  test('Should return null if all validations returns null or empty', () {
     mockValidation2('');
 
     final error = sut.validate(field: 'any_field', value: 'any_value');
@@ -52,15 +54,5 @@ void main() {
     final error = sut.validate(field: 'any_field', value: 'any_value');
 
     expect(error, 'error_2');
-  });
-
-  test('Should return the first error of the field', () {
-    mockValidation1('error_1');
-    mockValidation2('error_2');
-    mockValidation3('error_3');
-
-    final error = sut.validate(field: 'any_field', value: 'any_value');
-
-    expect(error, 'error_1');
   });
 }

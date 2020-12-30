@@ -3,9 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutterClean/main/factories/factories.dart';
 
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import '../ui/components/components.dart';
 
 void main() {
+  Provider.debugCheckInvalidValueType = null;
+
   runApp(App());
 }
 
@@ -19,7 +22,10 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: makeAppTheme(),
       initialRoute: '/login',
-      getPages: [GetPage(name: '/login', page: makeLoginPage)],
+      getPages: [
+        GetPage(name: '/login', page: makeLoginPage),
+        GetPage(name: '/surveys', page: () => Scaffold(body: Text('Enquetes')))
+      ],
     );
   }
 }

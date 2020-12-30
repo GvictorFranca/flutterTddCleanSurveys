@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import 'login_presenter.dart';
@@ -8,14 +9,14 @@ import 'components/components.dart';
 class LoginPage extends StatelessWidget {
   final LoginPresenter presenter;
 
-  const LoginPage(this.presenter);
+  LoginPage(this.presenter);
 
   @override
   Widget build(BuildContext context) {
     void _hideKeyboard() {
-      final currentFocus = FocusScope.of(context);
-      if (!currentFocus.hasPrimaryFocus) {
-        currentFocus.unfocus();
+      final currectFocus = FocusScope.of(context);
+      if (!currectFocus.hasPrimaryFocus) {
+        currectFocus.unfocus();
       }
     }
 
@@ -36,37 +37,42 @@ class LoginPage extends StatelessWidget {
             }
           });
 
+          presenter.navigateToStream.listen((page) {
+            if (page?.isNotEmpty == true) {
+              Get.offAllNamed(page);
+            }
+          });
+
           return GestureDetector(
-            onDoubleTap: _hideKeyboard,
+            onTap: _hideKeyboard,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+                children: <Widget>[
                   LoginHeader(),
                   Headline1(text: 'Login'),
                   Padding(
-                    padding: const EdgeInsets.all(32),
+                    padding: EdgeInsets.all(32),
                     child: Provider(
                       create: (_) => presenter,
                       child: Form(
                         child: Column(
-                          children: [
+                          children: <Widget>[
                             EmailInput(),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 8.0, bottom: 32),
+                              padding: EdgeInsets.only(top: 8, bottom: 32),
                               child: PasswordInput(),
                             ),
                             LoginButton(),
                             FlatButton.icon(
-                                onPressed: null,
+                                onPressed: () {},
                                 icon: Icon(Icons.person),
-                                label: Text('Criar conta'))
+                                label: Text('Criar Conta'))
                           ],
                         ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
