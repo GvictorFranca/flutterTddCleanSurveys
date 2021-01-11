@@ -20,9 +20,14 @@ class FetchSecureCacheStorageSpy extends Mock
     implements FetchSecureCacheStorage {}
 
 void main() {
-  final fetchSecureCacheStorage = FetchSecureCacheStorageSpy();
-  final sut =
-      LocalLoadCurrentAccount(fetchSecureCacheStorage: fetchSecureCacheStorage);
+  FetchSecureCacheStorageSpy fetchSecureCacheStorage;
+  LocalLoadCurrentAccount sut;
+
+  setUp(() {
+    fetchSecureCacheStorage = FetchSecureCacheStorageSpy();
+    sut = LocalLoadCurrentAccount(
+        fetchSecureCacheStorage: fetchSecureCacheStorage);
+  });
 
   test('Should call FetchSecureCacheStorage with correct vvalue', () async {
     await sut.load();
