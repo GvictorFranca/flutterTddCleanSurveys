@@ -37,10 +37,25 @@ void main() {
   });
 
   group('Fetch Secure', () {
+    void mockFetcSecure() {
+      when(secureStorage.read(key: anyNamed('key')))
+          .thenAnswer((_) async => value);
+    }
+
+    setUp(() {
+      mockFetcSecure();
+    });
+
     test('Should call fetch secure with correct values', () async {
       await sut.fetchSecure(key);
 
       verify(secureStorage.read(key: key));
+    });
+
+    test('Should return correct value no sucess', () async {
+      final fetchedValue = await sut.fetchSecure(key);
+
+      expect(fetchedValue, value);
     });
   });
 }
