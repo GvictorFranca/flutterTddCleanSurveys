@@ -10,8 +10,8 @@
 ## Excecao - URL invalida
 1. Sistemma retorna uma mensagem de erro inesperado
 
-## Excecao - Dados Invalidos
-1. Sistemma retorna uma mensagem de erro inesperado
+## Excecao - Dados Invalidos 400
+1. ✅ Sistemma retorna uma mensagem de erro inesperado
 
 ## Excecao - Resposta Invalida
 1. Sistemma retorna uma mensagem de erro inesperado
