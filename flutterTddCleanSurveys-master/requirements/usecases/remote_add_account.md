@@ -20,4 +20,4 @@
 1. ✅ Sistemma retorna uma mensagem de erro inesperado
 
 ## Excecao - Email em uso
-1. Sistemma retorna uma mensagem informando que o email ja esta em uso
+1. ✅ Sistemma retorna uma mensagem informando que o email ja esta em uso
