@@ -21,7 +21,7 @@ class App extends StatelessWidget {
       title: 'Clean',
       debugShowCheckedModeBanner: false,
       theme: makeAppTheme(),
-      initialRoute: '/',
+      initialRoute: '/login',
       getPages: [
         GetPage(name: '/', page: makeSplashPage, transition: Transition.fade),
         GetPage(
