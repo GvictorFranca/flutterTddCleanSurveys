@@ -7,8 +7,8 @@
 3. Sistema valida os dados recebidos da API
 4. Sistema entrega os dados da conta do usuario
 
-## Excecao - URL invalida
-1. Sistemma retorna uma mensagem de erro inesperado
+## Excecao - URL invalida 404
+1. ✅ Sistemma retorna uma mensagem de erro inesperado
 
 ## Excecao - Dados Invalidos 400
 1. ✅ Sistemma retorna uma mensagem de erro inesperado
