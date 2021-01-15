@@ -14,7 +14,7 @@
 1. ✅ Sistemma retorna uma mensagem de erro inesperado
 
 ## Excecao - Resposta Invalida
-1. Sistemma retorna uma mensagem de erro inesperado
+1. ✅ Sistemma retorna uma mensagem de erro inesperado
 
 ## Excecao - Falha no Servidor
 1. ✅ Sistemma retorna uma mensagem de erro inesperado
