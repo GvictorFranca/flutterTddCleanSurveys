@@ -4,8 +4,8 @@
 
 1. ✅ Sistema valida os dados
 2. ✅ Sistema faz uma reuqisicao para a URL da API de signUp
-3. Sistema valida os dados recebidos da API
-4. Sistema entrega os dados da conta do usuario
+3. ✅ Sistema valida os dados recebidos da API
+4. ✅ Sistema entrega os dados da conta do usuario
 
 ## Excecao - URL invalida 404
 1. ✅ Sistemma retorna uma mensagem de erro inesperado
