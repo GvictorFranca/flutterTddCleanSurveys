@@ -13,10 +13,10 @@ class PasswordConfirmationInput extends StatelessWidget {
         builder: (context, snapshot) {
           return TextFormField(
             decoration: InputDecoration(
-              labelText: R.string.confirmPassword,
-              icon:
-                  Icon(Icons.lock, color: Theme.of(context).primaryColorLight),
-            ),
+                labelText: R.string.confirmPassword,
+                icon: Icon(Icons.lock,
+                    color: Theme.of(context).primaryColorLight),
+                errorText: snapshot.hasData ? snapshot.data.description : null),
             obscureText: true,
             onChanged: presenter.validatePasswordConfirmation,
           );
