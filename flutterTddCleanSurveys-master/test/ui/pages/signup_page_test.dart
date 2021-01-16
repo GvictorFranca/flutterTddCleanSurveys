@@ -6,56 +6,54 @@ import 'package:faker/faker.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:flutterClean/ui/pages/pages.dart';
+import 'package:flutterClean/ui/helpers/errors/errors.dart';
 
 class SignUpPresenterSpy extends Mock implements SignUpPresenter {}
 
 void main() {
-  LoginPresenter presenter;
-  StreamController<String> emailErrorController;
-  StreamController<String> passwordErrorController;
-  StreamController<String> mainErrorController;
-  StreamController<String> navigateToController;
-  StreamController<bool> isFormValidController;
-  StreamController<bool> isLoadingController;
+  SignUpPresenter presenter;
+  StreamController<UIError> nameErrorController;
+  StreamController<UIError> emailErrorController;
+  StreamController<UIError> passwordErrorController;
+  StreamController<UIError> passwordConfirmationErrorController;
 
   void initStreams() {
-    emailErrorController = StreamController<String>();
-    passwordErrorController = StreamController<String>();
-    mainErrorController = StreamController<String>();
-    navigateToController = StreamController<String>();
-    isFormValidController = StreamController<bool>();
-    isLoadingController = StreamController<bool>();
+    nameErrorController = StreamController<UIError>();
+    emailErrorController = StreamController<UIError>();
+    passwordErrorController = StreamController<UIError>();
+    passwordConfirmationErrorController = StreamController<UIError>();
   }
 
   void mockStreams() {
+    when(presenter.nameErrorStream)
+        .thenAnswer((_) => nameErrorController.stream);
     when(presenter.emailErrorStream)
         .thenAnswer((_) => emailErrorController.stream);
     when(presenter.passwordErrorStream)
         .thenAnswer((_) => passwordErrorController.stream);
-    when(presenter.mainErrorStream)
-        .thenAnswer((_) => mainErrorController.stream);
-    when(presenter.navigateToStream)
-        .thenAnswer((_) => navigateToController.stream);
-    when(presenter.isFormValidStream)
-        .thenAnswer((_) => isFormValidController.stream);
-    when(presenter.isLoadingStream)
-        .thenAnswer((_) => isLoadingController.stream);
+    when(presenter.passwordConfirmationErrorStream)
+        .thenAnswer((_) => passwordConfirmationErrorController.stream);
   }
 
   void closeStreams() {
+    nameErrorController.close();
     emailErrorController.close();
     passwordErrorController.close();
-    mainErrorController.close();
-    navigateToController.close();
-    isFormValidController.close();
-    isLoadingController.close();
+    passwordConfirmationErrorController.close();
   }
 
+  tearDown(() {
+    closeStreams();
+  });
+
   Future<void> loadPage(WidgetTester tester) async {
+    presenter = SignUpPresenterSpy();
+    initStreams();
+    mockStreams();
     final signUpPage = GetMaterialApp(
       initialRoute: '/signup',
       getPages: [
-        GetPage(name: '/signup', page: () => SignUpPage()),
+        GetPage(name: '/signup', page: () => SignUpPage(presenter)),
       ],
     );
     await tester.pumpWidget(signUpPage);
@@ -83,7 +81,7 @@ void main() {
             'when a TextFormField has only one text child, means it has no errors, since one of the childs is always the label text');
 
     final passwordConfirmationTextChildren = find.descendant(
-        of: find.bySemanticsLabel('Confirmar Senha'),
+        of: find.bySemanticsLabel('Confirmar senha'),
         matching: find.byType(Text));
     expect(passwordConfirmationTextChildren, findsOneWidget,
         reason:
@@ -98,6 +96,10 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
+    final name = faker.person.name();
+    await tester.enterText(find.bySemanticsLabel('Nome'), name);
+    verify(presenter.validateName(name));
+
     final email = faker.internet.email();
     await tester.enterText(find.bySemanticsLabel('Email'), email);
     verify(presenter.validateEmail(email));
@@ -105,5 +107,10 @@ void main() {
     final password = faker.internet.password();
     await tester.enterText(find.bySemanticsLabel('Senha'), password);
     verify(presenter.validatePassword(password));
+
+    final passwordConfirmation = faker.internet.password();
+    await tester.enterText(
+        find.bySemanticsLabel('Confirmar senha'), passwordConfirmation);
+    verify(presenter.validatePasswordConfirmation(passwordConfirmation));
   });
 }

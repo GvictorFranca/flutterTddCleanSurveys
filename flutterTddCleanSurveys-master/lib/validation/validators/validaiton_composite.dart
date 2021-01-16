@@ -1,20 +1,19 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutterClean/presentation/dependencies/validation.dart';
-import 'package:flutterClean/validation/protocols/protocols.dart';
 import 'package:meta/meta.dart';
 
-class ValidationComposite extends Equatable implements Validation {
-  final List<FieldValidation> validations;
+import '../../presentation/dependencies/dependencies.dart';
 
-  List get props => [validations];
+import '../protocols/protocols.dart';
+
+class ValidationComposite implements Validation {
+  final List<FieldValidation> validations;
 
   ValidationComposite(this.validations);
 
-  String validate({@required String field, @required String value}) {
-    String error;
+  ValidationError validate({@required String field, @required String value}) {
+    ValidationError error;
     for (final validation in validations.where((v) => v.field == field)) {
-      final error = validation.validate(value);
-      if (error?.isNotEmpty == true) {
+      error = validation.validate(value);
+      if (error != null) {
         return error;
       }
     }
