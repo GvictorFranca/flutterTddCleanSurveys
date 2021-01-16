@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutterClean/ui/pages/pages.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../ui/helpers/i18n/i18n.dart';
+
 class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -11,7 +13,7 @@ class LoginButton extends StatelessWidget {
         builder: (context, snapshot) {
           return RaisedButton(
             onPressed: snapshot.data == true ? presenter.auth : null,
-            child: Text('Entrar'.toUpperCase()),
+            child: Text(R.string.enter.toUpperCase()),
           );
         });
   }

@@ -7,22 +7,23 @@ import 'package:get/get.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:flutterClean/ui/pages/pages.dart';
+import 'package:flutterClean/ui/helpers/errors/errors.dart';
 
 class LoginPresenterSpy extends Mock implements LoginPresenter {}
 
 void main() {
   LoginPresenter presenter;
-  StreamController<String> emailErrorController;
-  StreamController<String> passwordErrorController;
-  StreamController<String> mainErrorController;
+  StreamController<UIError> emailErrorController;
+  StreamController<UIError> passwordErrorController;
+  StreamController<UIError> mainErrorController;
   StreamController<String> navigateToController;
   StreamController<bool> isFormValidController;
   StreamController<bool> isLoadingController;
 
   void initStreams() {
-    emailErrorController = StreamController<String>();
-    passwordErrorController = StreamController<String>();
-    mainErrorController = StreamController<String>();
+    emailErrorController = StreamController<UIError>();
+    passwordErrorController = StreamController<UIError>();
+    mainErrorController = StreamController<UIError>();
     navigateToController = StreamController<String>();
     isFormValidController = StreamController<bool>();
     isLoadingController = StreamController<bool>();
@@ -109,7 +110,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    emailErrorController.add('any error');
+    emailErrorController.add(UIError.requiredField);
     await tester.pump();
 
     expect(find.text('any error'), findsOneWidget);
@@ -132,7 +133,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    emailErrorController.add('');
+    emailErrorController.add(UIError.requiredField);
     await tester.pump();
 
     expect(
@@ -145,7 +146,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    passwordErrorController.add('any error');
+    passwordErrorController.add(UIError.requiredField);
     await tester.pump();
 
     expect(find.text('any error'), findsOneWidget);
@@ -168,7 +169,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    passwordErrorController.add('');
+    passwordErrorController.add(UIError.requiredField);
     await tester.pump();
 
     expect(
@@ -235,7 +236,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    mainErrorController.add('main error');
+    mainErrorController.add(UIError.requiredField);
     await tester.pump();
 
     expect(find.text('main error'), findsOneWidget);

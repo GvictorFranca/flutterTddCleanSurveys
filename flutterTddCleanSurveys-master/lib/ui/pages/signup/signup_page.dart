@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutterClean/utils/i18n/i18n.dart';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
 import 'components/components.dart';
@@ -26,7 +24,7 @@ class SignUpPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   LoginHeader(),
-                  Headline1(text: 'Login'),
+                  Headline1(text: 'SignUp'),
                   Padding(
                     padding: EdgeInsets.all(32),
                     child: Form(
