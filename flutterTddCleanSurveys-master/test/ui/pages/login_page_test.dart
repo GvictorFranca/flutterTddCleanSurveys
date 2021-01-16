@@ -189,7 +189,7 @@ void main() {
     expect(button.onPressed, isNotNull);
   });
 
-  testWidgets('Should enable button if form is valid',
+  testWidgets('Should desable button if form is invalid',
       (WidgetTester tester) async {
     await loadPage(tester);
 

@@ -17,10 +17,10 @@
 13. ✅ Validar confirmacao de senha quando o usuario digitar no campo
 14. ✅ Mostrar mensagem de erro se a confirmacao de senha for invalida
 15. ✅ Remover mensagem de erro se a confirmmacao de senha for valida
-16. Habilitar o botao de criar conta se todos os campos forem validos
-17. Desabilitar o bootao de criar conta se algum campo for invalido
+16. ✅  Habilitar o botao de criar conta se todos os campos forem validos
+17. ✅ Desabilitar o bootao de criar conta se algum campo for invalido
 18. Exibir loading no inicio da acao de criar conta
 19. Chamar o metodo de criar conta 
 20 Exibir mensagem de erro caso a criacao de conta falhe
 21. Esconder loading no fim da acao de criar conta
-22. Fechar streams quando a pagina for encerrada
+22. ✅ Fechar streams quando a pagina for encerrada
