@@ -249,7 +249,7 @@ void main() {
     await tester.tap(button);
     await tester.pump();
 
-    verify(presenter.signUp()).called(1);
+    verify(presenter.signup()).called(1);
   });
 
   testWidgets('Should present loading', (WidgetTester tester) async {
@@ -312,5 +312,17 @@ void main() {
     navigateToController.add(null);
     await tester.pumpAndSettle();
     expect(Get.currentRoute, '/signup');
+  });
+
+  testWidgets('Should call goToLoginPage on link click',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    final button = find.text('Login');
+    await tester.ensureVisible(button);
+    await tester.tap(button);
+    await tester.pump();
+
+    verify(presenter.goToLogin()).called(1);
   });
 }
