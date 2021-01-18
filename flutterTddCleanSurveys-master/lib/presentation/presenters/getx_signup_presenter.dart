@@ -1,3 +1,4 @@
+import 'package:flutterClean/domain/helpers/domain_error.dart';
 import 'package:flutterClean/domain/usecases/add_account.dart';
 import 'package:flutterClean/domain/usecases/save_current_account.dart';
 import 'package:get/get.dart';
@@ -13,9 +14,11 @@ class GetxSignUpPresenter extends GetxController {
 
   var _emailError = Rx<UIError>();
   var _nameError = Rx<UIError>();
+  var _mainError = Rx<UIError>();
   var _passwordError = Rx<UIError>();
   var _passwordConfirmationError = Rx<UIError>();
   var _isFormValid = false.obs;
+  var _isLoading = false.obs;
 
   String _name;
   String _email;
@@ -25,9 +28,11 @@ class GetxSignUpPresenter extends GetxController {
   Stream<UIError> get emailErrorStream => _emailError.stream;
   Stream<UIError> get nameErrorStream => _nameError.stream;
   Stream<UIError> get passwordErrorStream => _passwordError.stream;
+  Stream<UIError> get mainErrorStream => _mainError.stream;
   Stream<UIError> get passwordConfirmationErrorStream =>
       _passwordConfirmationError.stream;
   Stream<bool> get isFormValidStream => _isFormValid.stream;
+  Stream<bool> get isLoadingStream => _isLoading.stream;
 
   GetxSignUpPresenter(
       {@required this.validation,
@@ -83,13 +88,23 @@ class GetxSignUpPresenter extends GetxController {
   }
 
   Future<void> signup() async {
-    final account = await addAccount.add(
-      AddAccountParams(
-          name: _name,
-          email: _email,
-          password: _password,
-          passwordConfirmation: _passwordConfirmation),
-    );
-    await saveCurrentAccount.save(account);
+    try {
+      _isLoading.value = true;
+      final account = await addAccount.add(
+        AddAccountParams(
+            name: _name,
+            email: _email,
+            password: _password,
+            passwordConfirmation: _passwordConfirmation),
+      );
+      await saveCurrentAccount.save(account);
+    } on DomainError catch (error) {
+      switch (error) {
+        default:
+          _mainError.value = UIError.unexpected;
+          break;
+      }
+      _isLoading.value = false;
+    }
   }
 }

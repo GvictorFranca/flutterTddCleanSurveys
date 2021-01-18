@@ -1,6 +1,6 @@
 import 'package:faker/faker.dart';
 import 'package:flutterClean/domain/entities/entities.dart';
-import 'package:flutterClean/domain/helpers/domain_error.dart';
+import 'package:flutterClean/domain/helpers/helpers.dart';
 import 'package:flutterClean/presentation/dependencies/validation.dart';
 import 'package:flutterClean/presentation/presenters/presenter.dart';
 
