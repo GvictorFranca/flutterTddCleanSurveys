@@ -18,7 +18,7 @@ void main() {
     saveSecureCacheStorage = SaveSecureCacheStorageSpy();
     sut =
         LocalSaveCurrentAccount(saveSecureCacheStorage: saveSecureCacheStorage);
-    account = AccountEntity(faker.guid.guid());
+    account = AccountEntity(token: faker.guid.guid());
   });
   test('Should call SaveCacheStorage with correct values', () async {
     await sut.save(account);
