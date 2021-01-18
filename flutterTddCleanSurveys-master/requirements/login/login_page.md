@@ -16,4 +16,4 @@
 13. ✅ Chamar o metodo de autenticar
 14. ✅  Exibir mensagem de erro caso o login falhe
 15. ✅ Esconder o loading no fim da acao de login
-16. ✅ Fechar streams quando a pagina for encerrada
+16. ✅ Chamar o metodo de Criar Conta ao clicar no link
