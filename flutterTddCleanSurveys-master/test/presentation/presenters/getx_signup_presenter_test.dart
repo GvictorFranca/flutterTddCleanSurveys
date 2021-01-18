@@ -1,4 +1,6 @@
 import 'package:faker/faker.dart';
+import 'package:flutterClean/domain/entities/entities.dart';
+import 'package:flutterClean/domain/usecases/add_account.dart';
 
 import 'package:flutterClean/presentation/dependencies/validation.dart';
 import 'package:flutterClean/presentation/presenters/presenter.dart';
@@ -9,13 +11,17 @@ import 'package:test/test.dart';
 
 class ValidationSpy extends Mock implements Validation {}
 
+class AddAccountSpy extends Mock implements AddAccount {}
+
 void main() {
   GetxSignUpPresenter sut;
   ValidationSpy validation;
+  AddAccountSpy addAccount;
   String email;
   String name;
   String password;
   String passwordConfirmation;
+  String token;
 
   PostExpectation mockValidationCall(String field) => when(validation.validate(
       field: field == null ? anyNamed('field') : field,
@@ -25,17 +31,23 @@ void main() {
     mockValidationCall(field).thenReturn(value);
   }
 
+  PostExpectation mockAddAccountCall() => when(addAccount.add(any));
+
+  void mockAddAccount() {
+    mockAddAccountCall().thenAnswer((_) async => AccountEntity(token: token));
+  }
+
   setUp(() {
     validation = ValidationSpy();
-
-    sut = GetxSignUpPresenter(
-      validation: validation,
-    );
+    addAccount = AddAccountSpy();
+    sut = GetxSignUpPresenter(validation: validation, addAccount: addAccount);
     email = faker.internet.email();
     name = faker.person.name();
     password = faker.internet.password();
     passwordConfirmation = faker.internet.password();
+    token = faker.guid.guid();
     mockValidation();
+    mockAddAccount();
   });
 
   group('Email Group', () {
@@ -220,5 +232,20 @@ void main() {
     await Future.delayed(Duration.zero);
     sut.validatePassword(password);
     await Future.delayed(Duration.zero);
+  });
+  test('Should call AddAccount with correct values', () async {
+    sut.validateName(name);
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+    sut.validatePasswordConfirmation(passwordConfirmation);
+
+    await sut.signup();
+
+    verify(addAccount.add(AddAccountParams(
+      name: name,
+      email: email,
+      password: password,
+      passwordConfirmation: passwordConfirmation,
+    ))).called(1);
   });
 }
