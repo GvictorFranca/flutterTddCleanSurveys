@@ -15,19 +15,16 @@ class MinLenghtValidation implements FieldValidation {
 }
 
 void main() {
+  MinLenghtValidation sut;
+
+  setUp(() {
+    sut = MinLenghtValidation(field: 'any_field', lenght: 5);
+  });
   test('Should return error if value is empity', () {
-    final sut = MinLenghtValidation(field: 'any_field', lenght: 5);
-
-    final error = sut.validate('');
-
-    expect(error, ValidationError.invalidField);
+    expect(sut.validate(''), ValidationError.invalidField);
   });
 
   test('Should return error if value is null', () {
-    final sut = MinLenghtValidation(field: 'any_field', lenght: 5);
-
-    final error = sut.validate(null);
-
-    expect(error, ValidationError.invalidField);
+    expect(sut.validate(null), ValidationError.invalidField);
   });
 }
