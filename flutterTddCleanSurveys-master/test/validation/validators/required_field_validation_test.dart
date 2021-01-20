@@ -1,3 +1,4 @@
+import 'package:flutterClean/presentation/dependencies/dependencies.dart';
 import 'package:flutterClean/validation/validators/validators.dart';
 import 'package:test/test.dart';
 
@@ -9,14 +10,14 @@ void main() {
   });
 
   test('Should return null if value is not empity', () {
-    expect(sut.validate('any_value'), null);
+    expect(sut.validate({'any_field': 'any_value'}), null);
   });
 
   test('Should return error if value is empity', () {
-    expect(sut.validate(''), 'Campo Obrigatiorio');
+    expect(sut.validate({'any_field': ''}), ValidationError.requiredField);
   });
 
   test('Should return error if value is null', () {
-    expect(sut.validate(null), 'Campo Obrigatiorio');
+    expect(sut.validate({'any_field': null}), ValidationError.requiredField);
   });
 }

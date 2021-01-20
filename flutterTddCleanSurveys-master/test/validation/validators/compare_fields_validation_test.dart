@@ -8,15 +8,17 @@ void main() {
 
   setUp(() {
     sut = CompareFieldsValidation(
-        field: 'any_field', valueToCompare: 'any_value');
+        field: 'any_field', fieldToCompare: 'other_field');
   });
 
   group('Error if value is empty or null', () {
     test('Should return error if value is not equal', () {
-      expect(sut.validate('wrong_valid'), ValidationError.invalidField);
+      final formData = {'any_field': 'any_value', 'other_field': 'other_value'};
+      expect(sut.validate(formData), ValidationError.invalidField);
     });
     test('Should return null if values are not equal', () {
-      expect(sut.validate('wrong_valid'), null);
+      final formData = {'any_field': 'any_value', 'other_field': 'any_value'};
+      expect(sut.validate(formData), null);
     });
   });
 }

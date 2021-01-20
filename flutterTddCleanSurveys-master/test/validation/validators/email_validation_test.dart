@@ -1,3 +1,4 @@
+import 'package:flutterClean/presentation/dependencies/dependencies.dart';
 import 'package:flutterClean/validation/validators/validators.dart';
 import 'package:test/test.dart';
 
@@ -9,18 +10,19 @@ void main() {
   });
 
   test('Should return null if email is empity', () {
-    expect(sut.validate(''), null);
+    expect(sut.validate({'any_field': ''}), null);
   });
 
   test('Should return null if email is empity', () {
-    expect(sut.validate(null), null);
+    expect(sut.validate({'any_field': null}), null);
   });
 
   test('Should return null if email is valid', () {
-    expect(sut.validate('gvictor@gmail.com'), null);
+    expect(sut.validate({'any_field': 'gvictor@gmail.com'}), null);
   });
 
-  test('Should return null if email is invalid', () {
-    expect(sut.validate('gvictor.gmail.com'), 'Campo Invalido');
+  test('Should return error if email is invalid', () {
+    expect(sut.validate({'any_field': 'gvictor.gmail.com'}),
+        ValidationError.invalidField);
   });
 }

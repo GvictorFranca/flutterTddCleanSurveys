@@ -10,8 +10,8 @@ class FetchSecureCacheStorageSpy extends Mock
     implements FetchSecureCacheStorage {}
 
 void main() {
-  FetchSecureCacheStorageSpy fetchSecureCacheStorage;
   LocalLoadCurrentAccount sut;
+  FetchSecureCacheStorageSpy fetchSecureCacheStorage;
   String token;
 
   PostExpectation mockFetchSecureCall() =>
@@ -40,8 +40,6 @@ void main() {
   });
 
   test('Should return an AccountEntity', () async {
-    String token = faker.guid.guid();
-
     final account = await sut.load();
 
     expect(account, AccountEntity(token: token));
@@ -51,7 +49,7 @@ void main() {
       () async {
     mockFetchSecureError();
 
-    final future = await sut.load();
+    final future = sut.load();
 
     expect(future, throwsA(DomainError.unexpected));
   });

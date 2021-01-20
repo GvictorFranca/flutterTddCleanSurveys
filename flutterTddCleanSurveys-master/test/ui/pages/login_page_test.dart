@@ -110,10 +110,20 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
+    emailErrorController.add(UIError.invalidField);
+    await tester.pump();
+
+    expect(find.text('Campo inválido'), findsOneWidget);
+  });
+
+  testWidgets('Should present error if email is empty',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
     emailErrorController.add(UIError.requiredField);
     await tester.pump();
 
-    expect(find.text('any error'), findsOneWidget);
+    expect(find.text('Campo obrigatório'), findsOneWidget);
   });
 
   testWidgets('Should present no error if email is valid',
@@ -129,27 +139,14 @@ void main() {
         findsOneWidget);
   });
 
-  testWidgets('Should present no error if email is empty',
-      (WidgetTester tester) async {
-    await loadPage(tester);
-
-    emailErrorController.add(UIError.requiredField);
-    await tester.pump();
-
-    expect(
-        find.descendant(
-            of: find.bySemanticsLabel('Email'), matching: find.byType(Text)),
-        findsOneWidget);
-  });
-
-  testWidgets('Should present error if password is invalid',
+  testWidgets('Should present error if password is empty',
       (WidgetTester tester) async {
     await loadPage(tester);
 
     passwordErrorController.add(UIError.requiredField);
     await tester.pump();
 
-    expect(find.text('any error'), findsOneWidget);
+    expect(find.text('Campo obrigatório'), findsOneWidget);
   });
 
   testWidgets('Should present no error if password is valid',
@@ -157,19 +154,6 @@ void main() {
     await loadPage(tester);
 
     passwordErrorController.add(null);
-    await tester.pump();
-
-    expect(
-        find.descendant(
-            of: find.bySemanticsLabel('Senha'), matching: find.byType(Text)),
-        findsOneWidget);
-  });
-
-  testWidgets('Should present no error if password is valid',
-      (WidgetTester tester) async {
-    await loadPage(tester);
-
-    passwordErrorController.add(UIError.requiredField);
     await tester.pump();
 
     expect(
@@ -189,7 +173,7 @@ void main() {
     expect(button.onPressed, isNotNull);
   });
 
-  testWidgets('Should desable button if form is invalid',
+  testWidgets('Should disable button if form is invalid',
       (WidgetTester tester) async {
     await loadPage(tester);
 
@@ -238,10 +222,21 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    mainErrorController.add(UIError.requiredField);
+    mainErrorController.add(UIError.invalidCredentials);
     await tester.pump();
 
-    expect(find.text('main error'), findsOneWidget);
+    expect(find.text('Credenciais inválidas.'), findsOneWidget);
+  });
+
+  testWidgets('Should present error message if authentication throws',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    mainErrorController.add(UIError.unexpected);
+    await tester.pump();
+
+    expect(find.text('Algo errado aconteceu. Tente novamente em breve.'),
+        findsOneWidget);
   });
 
   testWidgets('Should change page', (WidgetTester tester) async {
@@ -254,12 +249,22 @@ void main() {
     expect(find.text('fake page'), findsOneWidget);
   });
 
-  testWidgets('Should call goToSignUp on link click',
+  testWidgets('Should not change page', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    navigateToController.add('');
+    await tester.pump();
+    expect(Get.currentRoute, '/login');
+
+    navigateToController.add(null);
+    await tester.pump();
+    expect(Get.currentRoute, '/login');
+  });
+
+  testWidgets('Should call gotoSignUp on link click',
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    isFormValidController.add(true);
-    await tester.pump();
     final button = find.text('Criar conta');
     await tester.ensureVisible(button);
     await tester.tap(button);
