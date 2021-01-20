@@ -12,8 +12,11 @@ void main() {
   });
 
   group('Error if value is empty or null', () {
-    test('Should return error if value is no equal', () {
+    test('Should return error if value is not equal', () {
       expect(sut.validate('wrong_valid'), ValidationError.invalidField);
+    });
+    test('Should return null if values are not equal', () {
+      expect(sut.validate('wrong_valid'), null);
     });
   });
 }
