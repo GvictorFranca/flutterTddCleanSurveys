@@ -12,6 +12,11 @@ void main() {
   });
 
   group('Error if value is empty or null', () {
+    test('Should return null on invalid cases', () {
+      expect(sut.validate({'any_field': 'any_value'}), null);
+      expect(sut.validate({'other_field': 'any_value'}), null);
+      expect(sut.validate({}), null);
+    });
     test('Should return error if value is not equal', () {
       final formData = {'any_field': 'any_value', 'other_field': 'other_value'};
       expect(sut.validate(formData), ValidationError.invalidField);
