@@ -5,10 +5,10 @@ import 'package:flutterClean/validation/validators/validators.dart';
 import 'package:test/test.dart';
 
 void main() {
-  MinLenghtValidation sut;
+  MinLengthValidation sut;
 
   setUp(() {
-    sut = MinLenghtValidation(field: 'any_field', size: 5);
+    sut = MinLengthValidation(field: 'any_field', size: 5);
   });
 
   group('Error if value is empty or null', () {
