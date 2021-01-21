@@ -97,6 +97,7 @@ class GetxSignUpPresenter extends GetxController implements SignUpPresenter {
 
   Future<void> signup() async {
     try {
+      _mainError.value = null;
       _isLoading.value = true;
       final account = await addAccount.add(
         AddAccountParams(
