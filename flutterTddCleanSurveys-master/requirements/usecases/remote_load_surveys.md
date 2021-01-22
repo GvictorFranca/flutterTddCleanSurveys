@@ -4,7 +4,7 @@
 1. ✅ Sistema faz uma requisicao para a URL da API de surveys
 2. Sistema valida o tokenn de acesso para saber se o usuario tem permissao para ver esses dados
 3. Sistema valida os dados recebidos da API
-4. SIstema entrega os dados das enquetes
+4. ✅ SIstema entrega os dados das enquetes
 
 ## Excecao - URL invalida
 1. Sistema retorna uma mensagem de erro inexperado
