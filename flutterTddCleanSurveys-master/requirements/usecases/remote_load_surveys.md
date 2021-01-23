@@ -7,7 +7,7 @@
 4. ✅ SIstema entrega os dados das enquetes
 
 ## Excecao - URL invalida
-1. Sistema retorna uma mensagem de erro inexperado
+1. ✅ Sistema retorna uma mensagem de erro inexperado
 
 ## Excecao - Acesso negado
 1. Sistema retorna uma mensagem de acesso negado
