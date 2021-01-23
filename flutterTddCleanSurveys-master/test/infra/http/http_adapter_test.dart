@@ -227,12 +227,20 @@ void main() {
 
       expect(future, throwsA(HttpError.unauthorized));
     });
-    test('Should return ForbiddenError if post returns 403', () {
+    test('Should return ForbiddenError if get returns 403', () {
       mockResponse(403);
 
-      final future = sut.request(url: url, method: 'post');
+      final future = sut.request(url: url, method: 'get');
 
       expect(future, throwsA(HttpError.forbidden));
+    });
+
+    test('Should return NotFound if get returns 404', () {
+      mockResponse(404);
+
+      final future = sut.request(url: url, method: 'get');
+
+      expect(future, throwsA(HttpError.notFound));
     });
   });
 }
