@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutterClean/ui/helpers/errors/errors.dart';
 import 'package:flutterClean/ui/pages/pages.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -11,13 +12,14 @@ class SurveysPresenterSpy extends Mock implements SurveysPresenter {}
 void main() {
   SurveysPresenterSpy presenter;
   StreamController<bool> isLoadingController;
+  StreamController<List<SurveyViewModel>> loadSurveysController;
 
   void initStreams() {
     // emailErrorController = StreamController<UIError>();
     // passwordErrorController = StreamController<UIError>();
     // mainErrorController = StreamController<UIError>();
     // navigateToController = StreamController<String>();
-    // isFormValidController = StreamController<bool>();
+    loadSurveysController = StreamController<List<SurveyViewModel>>();
     isLoadingController = StreamController<bool>();
   }
 
@@ -30,8 +32,8 @@ void main() {
     //     .thenAnswer((_) => mainErrorController.stream);
     // when(presenter.navigateToStream)
     //     .thenAnswer((_) => navigateToController.stream);
-    // when(presenter.isFormValidStream)
-    //     .thenAnswer((_) => isFormValidController.stream);
+    when(presenter.loadSurveysStream)
+        .thenAnswer((_) => loadSurveysController.stream);
     when(presenter.isLoadingStream)
         .thenAnswer((_) => isLoadingController.stream);
   }
@@ -41,7 +43,7 @@ void main() {
     // passwordErrorController.close();
     // mainErrorController.close();
     // navigateToController.close();
-    // isFormValidController.close();
+    loadSurveysController.close();
     isLoadingController.close();
   }
 
@@ -86,5 +88,18 @@ void main() {
     isLoadingController.add(null);
     await tester.pump();
     expect(find.byType(CircularProgressIndicator), findsNothing);
+  });
+
+  testWidgets('Should present error if loadSurveys Stream fails',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    loadingSurveysController.add(UIError.unexpected.description);
+    await tester.pump();
+
+    expect(find.text('Algo errado aconteceu. Tente novamente em breve.'),
+        findsOneWidget);
+    expect(find.text('Recarregar'), findsOneWidget);
+    expect(find.text('Question 1'), findsOneWidget);
   });
 }
