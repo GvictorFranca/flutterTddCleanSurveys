@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterClean/ui/helpers/errors/errors.dart';
 import 'package:flutterClean/ui/pages/pages.dart';
@@ -65,6 +66,21 @@ void main() {
     await tester.pumpWidget(surveysPage);
   }
 
+  List<SurveyViewModel> makeSurveys() => [
+        SurveyViewModel(
+          id: '1',
+          question: 'Question 1',
+          date: 'any_date',
+          didAnswer: true,
+        ),
+        SurveyViewModel(
+          id: '1',
+          question: 'Question 2',
+          date: 'any_date',
+          didAnswer: false,
+        ),
+      ];
+
   testWidgets('Should call load Surveys on page laod',
       (WidgetTester tester) async {
     await loadPage(tester);
@@ -94,12 +110,26 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    loadingSurveysController.add(UIError.unexpected.description);
+    loadSurveysController.addError(UIError.unexpected.description);
     await tester.pump();
 
     expect(find.text('Algo errado aconteceu. Tente novamente em breve.'),
         findsOneWidget);
     expect(find.text('Recarregar'), findsOneWidget);
-    expect(find.text('Question 1'), findsOneWidget);
+    expect(find.text('Question 1'), findsNothing);
+  });
+
+  testWidgets('Should present list if loadSurveys succeeds',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    loadSurveysController.add(makeSurveys());
+    await tester.pump();
+
+    expect(find.text('Algo errado aconteceu. Tente novamente em breve.'),
+        findsNothing);
+    expect(find.text('Recarregar'), findsNothing);
+    expect(find.text('Question 1'), findsWidgets);
+    expect(find.text('Question 2'), findsWidgets);
   });
 }

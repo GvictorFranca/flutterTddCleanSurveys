@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 class SurveyViewModel {
   final String id;
   final String question;
-  final DateTime date;
+  final String date;
   final bool didAnswer;
 
   SurveyViewModel({
