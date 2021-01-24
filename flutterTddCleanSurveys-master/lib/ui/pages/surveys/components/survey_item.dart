@@ -15,7 +15,9 @@ class SurveyItem extends StatelessWidget {
         padding: EdgeInsets.all(20),
         width: 300,
         decoration: BoxDecoration(
-          color: Theme.of(context).secondaryHeaderColor,
+          color: viewModel.didAnswer
+              ? Theme.of(context).secondaryHeaderColor
+              : Theme.of(context).primaryColorDark,
           boxShadow: [
             BoxShadow(
                 offset: Offset(0, 4),

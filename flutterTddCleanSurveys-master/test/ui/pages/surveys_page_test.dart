@@ -70,13 +70,13 @@ void main() {
         SurveyViewModel(
           id: '1',
           question: 'Question 1',
-          date: 'any_date',
+          date: 'Date 1',
           didAnswer: true,
         ),
         SurveyViewModel(
           id: '1',
           question: 'Question 2',
-          date: 'any_date',
+          date: 'Date 2',
           didAnswer: false,
         ),
       ];
@@ -131,5 +131,7 @@ void main() {
     expect(find.text('Recarregar'), findsNothing);
     expect(find.text('Question 1'), findsWidgets);
     expect(find.text('Question 2'), findsWidgets);
+    expect(find.text('Date 1'), findsWidgets);
+    expect(find.text('Date 2'), findsWidgets);
   });
 }
