@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class SurveyItem extends StatelessWidget {
-  final String image;
-
-  const SurveyItem({Key key, this.image}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(

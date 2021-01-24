@@ -8,8 +8,6 @@ import 'components/components.dart';
 class SurveysPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final image =
-        'https://itcraftapps.com/wp-content/uploads/2019/11/flutter-DART.jpg';
     return Scaffold(
         appBar: AppBar(
           title: Text(R.string.surveys),
@@ -23,9 +21,9 @@ class SurveysPage extends StatelessWidget {
               aspectRatio: 1,
             ),
             items: [
-              SurveyItem(image: image),
-              SurveyItem(image: image),
-              SurveyItem(image: image),
+              SurveyItem(),
+              SurveyItem(),
+              SurveyItem(),
             ],
           ),
         ));
