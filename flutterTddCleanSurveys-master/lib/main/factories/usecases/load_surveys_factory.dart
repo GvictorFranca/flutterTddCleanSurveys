@@ -5,5 +5,6 @@ import 'package:flutterClean/main/factories/http/http.dart';
 
 LoadSurveys makeRemoteLoadSurveys() {
   return RemoteLoadSurveys(
-      httpClient: makeHttpAdapter(), url: makeApiUrl('surveys'));
+      httpClient: makeAuthorizeHttpClientDecorator(),
+      url: makeApiUrl('surveys'));
 }
