@@ -13,14 +13,14 @@ class SurveysPresenterSpy extends Mock implements SurveysPresenter {}
 void main() {
   SurveysPresenterSpy presenter;
   StreamController<bool> isLoadingController;
-  StreamController<List<SurveyViewModel>> loadSurveysController;
+  StreamController<List<SurveyViewModel>> surveysController;
 
   void initStreams() {
     // emailErrorController = StreamController<UIError>();
     // passwordErrorController = StreamController<UIError>();
     // mainErrorController = StreamController<UIError>();
     // navigateToController = StreamController<String>();
-    loadSurveysController = StreamController<List<SurveyViewModel>>();
+    surveysController = StreamController<List<SurveyViewModel>>();
     isLoadingController = StreamController<bool>();
   }
 
@@ -33,8 +33,7 @@ void main() {
     //     .thenAnswer((_) => mainErrorController.stream);
     // when(presenter.navigateToStream)
     //     .thenAnswer((_) => navigateToController.stream);
-    when(presenter.loadSurveysStream)
-        .thenAnswer((_) => loadSurveysController.stream);
+    when(presenter.surveysStream).thenAnswer((_) => surveysController.stream);
     when(presenter.isLoadingStream)
         .thenAnswer((_) => isLoadingController.stream);
   }
@@ -44,7 +43,7 @@ void main() {
     // passwordErrorController.close();
     // mainErrorController.close();
     // navigateToController.close();
-    loadSurveysController.close();
+    surveysController.close();
     isLoadingController.close();
   }
 
@@ -110,7 +109,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    loadSurveysController.addError(UIError.unexpected.description);
+    surveysController.addError(UIError.unexpected.description);
     await tester.pump();
 
     expect(find.text('Algo errado aconteceu. Tente novamente em breve.'),
@@ -123,7 +122,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    loadSurveysController.add(makeSurveys());
+    surveysController.add(makeSurveys());
     await tester.pump();
 
     expect(find.text('Algo errado aconteceu. Tente novamente em breve.'),
@@ -139,7 +138,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    loadSurveysController.addError(UIError.unexpected.description);
+    surveysController.addError(UIError.unexpected.description);
     await tester.pump();
 
     await tester.tap(
