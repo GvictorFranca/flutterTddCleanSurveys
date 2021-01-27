@@ -2,9 +2,10 @@ import 'package:flutterClean/data/cache/cache.dart';
 import 'package:flutterClean/data/models/models.dart';
 import 'package:flutterClean/domain/entities/entities.dart';
 import 'package:flutterClean/domain/helpers/helpers.dart';
+import 'package:flutterClean/domain/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
-class LocalLoadSurveys {
+class LocalLoadSurveys implements LoadSurveys {
   final FetchCacheStorage fetchCacheStorage;
 
   LocalLoadSurveys({
