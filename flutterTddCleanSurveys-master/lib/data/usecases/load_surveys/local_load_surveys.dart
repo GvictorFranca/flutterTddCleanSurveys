@@ -6,15 +6,15 @@ import 'package:flutterClean/domain/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 class LocalLoadSurveys implements LoadSurveys {
-  final FetchCacheStorage fetchCacheStorage;
+  final CacheStorage cacheStorage;
 
   LocalLoadSurveys({
-    @required this.fetchCacheStorage,
+    @required this.cacheStorage,
   });
 
   Future<List<SurveyEntity>> load() async {
     try {
-      final data = await fetchCacheStorage.fetch('surveys');
+      final data = await cacheStorage.fetch('surveys');
       if (data?.isEmpty == true) {
         throw Exception();
       }
