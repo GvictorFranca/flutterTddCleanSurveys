@@ -23,8 +23,11 @@ void main() {
   LocalStorageAdapter sut;
   LocalStorageSpy localStorage;
 
-  mockDeleteIitemError() =>
+  mockDeleteItemError() =>
       when(localStorage.deleteItem(any)).thenThrow(Exception());
+
+  mockSetItemError() =>
+      when(localStorage.setItem(any, value)).thenThrow(Exception());
 
   setUp(() {
     key = faker.randomGenerator.string(5);
@@ -40,8 +43,16 @@ void main() {
     verify(localStorage.setItem(key, value)).called(1);
   });
 
+  test('Should throws if delete item throws', () async {
+    mockDeleteItemError();
+
+    final future = sut.save(key: key, value: value);
+
+    expect(future, throwsA(TypeMatcher<Exception>()));
+  });
+
   test('Should throws iif delete item throws', () async {
-    mockDeleteIitemError();
+    mockSetItemError();
 
     final future = sut.save(key: key, value: value);
 
