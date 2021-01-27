@@ -1,6 +1,5 @@
 import 'package:flutterClean/domain/entities/entities.dart';
 import 'package:meta/meta.dart';
-import 'package:flutterClean/data/http/http.dart';
 
 class LocalSurveyModel {
   final String id;
@@ -16,14 +15,14 @@ class LocalSurveyModel {
   });
 
   factory LocalSurveyModel.fromJson(Map json) {
-    // if (!json.keys.toSet().containsAll([
-    //   'id',
-    //   'question',
-    //   'date',
-    //   'didAnswer',
-    // ])) {
-    //   throw HttpError.invalidData;
-    // }
+    if (!json.keys.toSet().containsAll([
+      'id',
+      'question',
+      'date',
+      'didAnswer',
+    ])) {
+      throw Exception();
+    }
     return LocalSurveyModel(
       id: json['id'],
       question: json['question'],
