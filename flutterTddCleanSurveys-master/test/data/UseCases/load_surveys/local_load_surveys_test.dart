@@ -168,6 +168,19 @@ void main() {
 
       verify(cacheStorage.delete('surveys')).called(1);
     });
+
+    test('Should delete cache if its incomplete', () async {
+      mockFetch([
+        {
+          'date': '2020-07-20T20:18:04Z',
+          'didAnswer': 'false',
+        }
+      ]);
+
+      await sut.validate();
+
+      verify(cacheStorage.delete('surveys')).called(1);
+    });
     // test('Should return a list of surveys on sucess', () async {
     //   final surveys = await sut.load();
 
