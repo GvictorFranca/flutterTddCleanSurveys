@@ -1,5 +1,5 @@
+import 'package:flutterClean/main/composite/composite.dart';
 import 'package:flutterClean/validation/protocols/protocols.dart';
-import 'package:flutterClean/validation/validators/validators.dart';
 
 import 'package:flutterClean/presentation/dependencies/dependencies.dart';
 import 'package:test/test.dart';

@@ -1,8 +1,7 @@
+import 'package:flutterClean/validation/protocols/protocols.dart';
 import 'package:meta/meta.dart';
 
 import '../../presentation/dependencies/dependencies.dart';
-
-import '../protocols/protocols.dart';
 
 class ValidationComposite implements Validation {
   final List<FieldValidation> validations;
