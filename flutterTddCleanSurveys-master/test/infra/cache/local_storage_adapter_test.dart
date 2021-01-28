@@ -56,5 +56,21 @@ void main() {
 
       verify(localStorage.deleteItem(key)).called(1);
     });
+
+    test('Should throws if delete item throws', () async {
+      mockDeleteCacheError();
+
+      final future = sut.delete(key);
+
+      expect(future, throwsA(TypeMatcher<Exception>()));
+    });
+
+    // test('Should throws set item throws', () async {
+    //   mockSaveError();
+
+    //   final future = sut.save(key: key, value: value);
+
+    //   expect(future, throwsA(TypeMatcher<Exception>()));
+    // });
   });
 }
