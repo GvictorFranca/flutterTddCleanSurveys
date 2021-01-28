@@ -12,10 +12,10 @@ void main() {
   LocalStorageAdapter sut;
   LocalStorageSpy localStorage;
 
-  mockDeleteItemError() =>
+  mockDeleteCacheError() =>
       when(localStorage.deleteItem(any)).thenThrow(Exception());
 
-  mockSetItemError() =>
+  mockSaveError() =>
       when(localStorage.setItem(any, value)).thenThrow(Exception());
 
   setUp(() {
@@ -33,15 +33,15 @@ void main() {
   });
 
   test('Should throws if delete item throws', () async {
-    mockDeleteItemError();
+    mockDeleteCacheError();
 
     final future = sut.save(key: key, value: value);
 
     expect(future, throwsA(TypeMatcher<Exception>()));
   });
 
-  test('Should throws iif delete item throws', () async {
-    mockSetItemError();
+  test('Should throws set item throws', () async {
+    mockSaveError();
 
     final future = sut.save(key: key, value: value);
 
