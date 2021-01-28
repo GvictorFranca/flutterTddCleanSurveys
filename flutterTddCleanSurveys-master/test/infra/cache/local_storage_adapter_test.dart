@@ -15,6 +15,9 @@ void main() {
   mockDeleteCacheError() =>
       when(localStorage.deleteItem(any)).thenThrow(Exception());
 
+  mockFetchCacheError() =>
+      when(localStorage.getItem(any)).thenThrow(Exception());
+
   mockSaveError() =>
       when(localStorage.setItem(any, value)).thenThrow(Exception());
 
@@ -64,13 +67,37 @@ void main() {
 
       expect(future, throwsA(TypeMatcher<Exception>()));
     });
+  });
 
-    // test('Should throws set item throws', () async {
-    //   mockSaveError();
+  group('fetch', () {
+    String result;
 
-    //   final future = sut.save(key: key, value: value);
+    void mockFetch() =>
+        when(localStorage.getItem(any)).thenAnswer((_) => result);
 
-    //   expect(future, throwsA(TypeMatcher<Exception>()));
-    // });
+    setUp(() {
+      mockFetch();
+    });
+    test('Should call localStorage with correct values', () async {
+      sut.fetch(key);
+
+      verify(localStorage.getItem(key)).called(1);
+    });
+
+    test('Should return same value as localStorage', () async {
+      mockFetch();
+
+      final data = await sut.fetch(key);
+
+      expect(data, result);
+    });
+
+    test('Should throws if fetch item throws', () {
+      mockFetchCacheError();
+
+      final future = sut.fetch(key);
+
+      expect(future, throwsA(TypeMatcher<Exception>()));
+    });
   });
 }
