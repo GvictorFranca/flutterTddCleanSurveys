@@ -1,6 +1,7 @@
 import 'package:faker/faker.dart';
 import 'package:flutterClean/data/usecases/load_surveys/load_surveys.dart';
 import 'package:flutterClean/domain/entities/entities.dart';
+import 'package:flutterClean/domain/helpers/helpers.dart';
 import 'package:flutterClean/domain/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 import 'package:mockito/mockito.dart';
@@ -40,16 +41,22 @@ void main() {
             didAnswer: faker.randomGenerator.boolean())
       ];
 
-  void mockRemoteload() {
+  PostExpectation mockRemoteLoadCall() => when(remote.load());
+
+  void mockRemoteLoad() {
     remoteSurveys = mockSurveys();
-    when(remote.load()).thenAnswer((_) async => remoteSurveys);
+    mockRemoteLoadCall().thenAnswer((_) async => remoteSurveys);
+  }
+
+  void mockRemoteLoadError(DomainError error) {
+    mockRemoteLoadCall().thenThrow((_) async => error);
   }
 
   setUp(() {
     remote = RemoteLoadSurveysSpy();
     sut = RemoteLoadSurveysWithLocalFallback(remote: remote, local: local);
     local = LocalLoadSurveysSpy();
-    mockRemoteload();
+    mockRemoteLoad();
   });
   test('Should call  remote load', () async {
     await sut.load();
@@ -67,5 +74,14 @@ void main() {
     final surveys = await sut.load();
 
     expect(surveys, remoteSurveys);
+  });
+
+  test('Should rethrow  if remote remote load throws AccessDeniedError',
+      () async {
+    mockRemoteLoadError(DomainError.accessDenied);
+
+    final future = sut.load();
+
+    expect(future, throwsA(DomainError.accessDenied));
   });
 }
