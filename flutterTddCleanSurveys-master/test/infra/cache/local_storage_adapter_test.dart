@@ -72,8 +72,10 @@ void main() {
   group('fetch', () {
     String result;
 
-    void mockFetch() =>
-        when(localStorage.getItem(any)).thenAnswer((_) => result);
+    void mockFetch() {
+      result = faker.randomGenerator.string(50);
+      when(localStorage.getItem(any)).thenAnswer((_) => result);
+    }
 
     setUp(() {
       mockFetch();
@@ -85,8 +87,6 @@ void main() {
     });
 
     test('Should return same value as localStorage', () async {
-      mockFetch();
-
       final data = await sut.fetch(key);
 
       expect(data, result);
