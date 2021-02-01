@@ -6,7 +6,7 @@ import 'package:flutterClean/domain/usecases/usecases.dart';
 
 import 'package:meta/meta.dart';
 
-class RemoteLoadSurveysResult implements LoadSurveysResult {
+class RemoteLoadSurveysResult implements LoadSurveyResult {
   final String url;
   final HttpClient httpClient;
 

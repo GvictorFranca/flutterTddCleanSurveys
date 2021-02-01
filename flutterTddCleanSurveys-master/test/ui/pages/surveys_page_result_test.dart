@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterClean/ui/helpers/helpers.dart';
 import 'package:flutterClean/ui/pages/pages.dart';
 import 'package:flutterClean/ui/pages/survey_result/components/components.dart';
+import 'package:flutterClean/ui/pages/survey_result/components/icons/icons.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:image_test_utils/image_test_utils.dart';
@@ -24,7 +25,7 @@ void main() {
   void mockStreams() {
     when(presenter.isLoadingStream)
         .thenAnswer((_) => isLoadingController.stream);
-    when(presenter.surveysResultStream)
+    when(presenter.surveyResultStream)
         .thenAnswer((_) => surveysResultController.stream);
   }
 
