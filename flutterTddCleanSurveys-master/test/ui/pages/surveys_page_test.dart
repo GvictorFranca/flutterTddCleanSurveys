@@ -16,33 +16,17 @@ void main() {
   StreamController<List<SurveyViewModel>> surveysController;
 
   void initStreams() {
-    // emailErrorController = StreamController<UIError>();
-    // passwordErrorController = StreamController<UIError>();
-    // mainErrorController = StreamController<UIError>();
-    // navigateToController = StreamController<String>();
     surveysController = StreamController<List<SurveyViewModel>>();
     isLoadingController = StreamController<bool>();
   }
 
   void mockStreams() {
-    // when(presenter.emailErrorStream)
-    //     .thenAnswer((_) => emailErrorController.stream);
-    // when(presenter.passwordErrorStream)
-    //     .thenAnswer((_) => passwordErrorController.stream);
-    // when(presenter.mainErrorStream)
-    //     .thenAnswer((_) => mainErrorController.stream);
-    // when(presenter.navigateToStream)
-    //     .thenAnswer((_) => navigateToController.stream);
     when(presenter.surveysStream).thenAnswer((_) => surveysController.stream);
     when(presenter.isLoadingStream)
         .thenAnswer((_) => isLoadingController.stream);
   }
 
   void closeStreams() {
-    // emailErrorController.close();
-    // passwordErrorController.close();
-    // mainErrorController.close();
-    // navigateToController.close();
     surveysController.close();
     isLoadingController.close();
   }
