@@ -14,21 +14,26 @@ void main() {
   SurveysPresenterSpy presenter;
   StreamController<bool> isLoadingController;
   StreamController<List<SurveyViewModel>> surveysController;
+  StreamController<String> navigateToController;
 
   void initStreams() {
     surveysController = StreamController<List<SurveyViewModel>>();
     isLoadingController = StreamController<bool>();
+    navigateToController = StreamController<String>();
   }
 
   void mockStreams() {
     when(presenter.surveysStream).thenAnswer((_) => surveysController.stream);
     when(presenter.isLoadingStream)
         .thenAnswer((_) => isLoadingController.stream);
+    when(presenter.navigateToStream)
+        .thenAnswer((_) => navigateToController.stream);
   }
 
   void closeStreams() {
     surveysController.close();
     isLoadingController.close();
+    navigateToController.close();
   }
 
   Future<void> loadPage(WidgetTester tester) async {
@@ -43,7 +48,13 @@ void main() {
           page: () => SurveysPage(
             presenter,
           ),
-        )
+        ),
+        GetPage(
+          name: 'any_route',
+          page: () => Scaffold(
+            body: Text('Fake Page'),
+          ),
+        ),
       ],
     );
     await tester.pumpWidget(surveysPage);
@@ -129,6 +140,29 @@ void main() {
       find.text('Recarregar'),
     );
 
-    verify(presenter.loadData()).called(2);
+    verify(presenter.loadData()).called(1);
+  });
+
+  testWidgets('Should call go to SurveyResult on Survey click',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    surveysController.add(makeSurveys());
+    await tester.pump();
+
+    await tester.tap(find.text('Question 1'));
+    await tester.pump();
+
+    verify(presenter.goToSurveyResult('1')).called(1);
+  });
+
+  testWidgets('Should change page', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    navigateToController.add('/any_route');
+    await tester.pumpAndSettle();
+
+    expect(Get.currentRoute, '/any_route');
+    expect(find.text('Fake Page'), findsOneWidget);
   });
 }
