@@ -4,6 +4,6 @@ import 'package:flutterClean/main/decorators/decorators.dart';
 import 'package:flutterClean/main/factories/factories.dart';
 
 HttpClient makeAuthorizeHttpClientDecorator() => AuthorizeHttpClientDecorator(
-      decoratee: makeHttpAdapter(),
-      fetchSecureCacheStorage: makeSecureStorageAdapter(),
-    );
+    decoratee: makeHttpAdapter(),
+    fetchSecureCacheStorage: makeSecureStorageAdapter(),
+    deleteSecureCacheStorage: makeSecureStorageAdapter());
