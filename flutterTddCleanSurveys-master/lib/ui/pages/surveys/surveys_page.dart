@@ -39,7 +39,6 @@ class SurveysPage extends StatelessWidget {
                   reload: presenter.loadData,
                 );
               }
-
               if (snapshot.hasData) {
                 return SurveyItems(viewModels: snapshot.data);
               }
