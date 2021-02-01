@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutterClean/ui/helpers/helpers.dart';
 import 'package:flutterClean/ui/pages/pages.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -12,18 +13,23 @@ class SurveyResultPresenterSpy extends Mock implements SurveyResultPresenter {}
 void main() {
   SurveyResultPresenterSpy presenter;
   StreamController<bool> isLoadingController;
+  StreamController<dynamic> surveysResultController;
 
   void initStreams() {
     isLoadingController = StreamController<bool>();
+    surveysResultController = StreamController<List<SurveyViewModel>>();
   }
 
   void mockStreams() {
     when(presenter.isLoadingStream)
         .thenAnswer((_) => isLoadingController.stream);
+    when(presenter.surveysResultStream)
+        .thenAnswer((_) => surveysResultController.stream);
   }
 
   void closeStreams() {
     isLoadingController.close();
+    surveysResultController.close();
   }
 
   Future<void> loadPage(WidgetTester tester) async {
@@ -72,5 +78,17 @@ void main() {
     isLoadingController.add(null);
     await tester.pump();
     expect(find.byType(CircularProgressIndicator), findsNothing);
+  });
+
+  testWidgets('Should present error if surveysStream Stream fails',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    surveysResultController.addError(UIError.unexpected.description);
+    await tester.pump();
+
+    expect(find.text('Algo errado aconteceu. Tente novamente em breve.'),
+        findsOneWidget);
+    expect(find.text('Recarregar'), findsOneWidget);
   });
 }

@@ -15,8 +15,8 @@ class ReloadScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 100.0, left: 58),
       child: Container(
-        height: 200,
-        width: 300,
+        height: 100,
+        width: 200,
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColorLight,
           borderRadius: BorderRadius.circular(30),
