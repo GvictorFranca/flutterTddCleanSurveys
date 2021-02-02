@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:intl/intl.dart';
 
-class GetxSurveysPresenter
+class GetxSurveysPresenter extends GetxController
     with SessionManager, LoadingManager, NavigationManager
     implements SurveysPresenter {
   final LoadSurveys loadSurveys;
