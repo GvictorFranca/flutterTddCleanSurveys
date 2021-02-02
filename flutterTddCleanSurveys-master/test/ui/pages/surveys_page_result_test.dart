@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutterClean/ui/helpers/helpers.dart';
 import 'package:flutterClean/ui/pages/pages.dart';
-import 'package:flutterClean/ui/pages/survey_result/components/components.dart';
+
 import 'package:flutterClean/ui/pages/survey_result/components/icons/icons.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -15,11 +15,13 @@ class SurveyResultPresenterSpy extends Mock implements SurveyResultPresenter {}
 void main() {
   SurveyResultPresenterSpy presenter;
   StreamController<bool> isLoadingController;
+  StreamController<bool> isSessionExpiredController;
   StreamController<SurveyResultViewModel> surveysResultController;
 
   void initStreams() {
     isLoadingController = StreamController<bool>();
     surveysResultController = StreamController<SurveyResultViewModel>();
+    isSessionExpiredController = StreamController<bool>();
   }
 
   void mockStreams() {
@@ -27,11 +29,14 @@ void main() {
         .thenAnswer((_) => isLoadingController.stream);
     when(presenter.surveyResultStream)
         .thenAnswer((_) => surveysResultController.stream);
+    when(presenter.isSessionExpiredStream)
+        .thenAnswer((_) => isSessionExpiredController.stream);
   }
 
   void closeStreams() {
     isLoadingController.close();
     surveysResultController.close();
+    isSessionExpiredController.close();
   }
 
   Future<void> loadPage(WidgetTester tester) async {
@@ -42,8 +47,15 @@ void main() {
       initialRoute: '/survey_result/3',
       getPages: [
         GetPage(
-            name: '/survey_result/:survey_id',
-            page: () => SurveyResultPage(presenter))
+          name: '/survey_result/:survey_id',
+          page: () => SurveyResultPage(presenter),
+        ),
+        GetPage(
+          name: '/login',
+          page: () => Scaffold(
+            body: Text('Fake Login'),
+          ),
+        ),
       ],
     );
     await provideMockedNetworkImages(() async {
@@ -147,5 +159,26 @@ void main() {
     final image =
         tester.widget<Image>(find.byType(Image)).image as NetworkImage;
     expect(image.url, 'Image 0');
+  });
+
+  testWidgets('Should logout', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    isSessionExpiredController.add(true);
+    await tester.pumpAndSettle();
+
+    expect(Get.currentRoute, '/login');
+    expect(find.text('Fake Login'), findsOneWidget);
+  });
+  testWidgets('Should not logout', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    isSessionExpiredController.add(false);
+    await tester.pumpAndSettle();
+    expect(Get.currentRoute, '/survey_result/3');
+
+    isSessionExpiredController.add(null);
+    await tester.pumpAndSettle();
+    expect(Get.currentRoute, '/survey_result/3');
   });
 }

@@ -1,12 +1,11 @@
 import 'package:faker/faker.dart';
 import 'package:flutterClean/data/cache/cache.dart';
-import 'package:flutterClean/data/models/models.dart';
+
 import 'package:flutterClean/data/usecases/load_surveys/load_surveys.dart';
 import 'package:flutterClean/domain/entities/entities.dart';
 import 'package:flutterClean/domain/helpers/helpers.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-import 'package:meta/meta.dart';
 
 class CacheStorageSpy extends Mock implements CacheStorage {}
 

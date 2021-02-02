@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterClean/ui/components/components.dart';
 import 'package:flutterClean/ui/helpers/helpers.dart';
 import 'package:flutterClean/ui/pages/pages.dart';
+import 'package:get/get.dart';
 
 import 'components/components.dart';
 
@@ -23,6 +24,13 @@ class SurveyResultPage extends StatelessWidget {
               hideLoading(context);
             }
           });
+
+          presenter.isSessionExpiredStream.listen((isExpired) {
+            if (isExpired == true) {
+              Get.offAllNamed('/login');
+            }
+          });
+
           presenter.loadData();
 
           return StreamBuilder<SurveyResultViewModel>(
