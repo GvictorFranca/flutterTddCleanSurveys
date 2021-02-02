@@ -30,13 +30,13 @@ void main() {
 
   group('save', () {
     test('Should call localStorage with correct values', () async {
-      sut.save(key: key, value: value);
+      await sut.save(key: key, value: value);
 
       verify(localStorage.deleteItem(key)).called(1);
       verify(localStorage.setItem(key, value)).called(1);
     });
 
-    test('Should throws if delete item throws', () async {
+    test('Should throws if delete item throws', () {
       mockDeleteCacheError();
 
       final future = sut.save(key: key, value: value);
@@ -44,7 +44,7 @@ void main() {
       expect(future, throwsA(TypeMatcher<Exception>()));
     });
 
-    test('Should throws set item throws', () async {
+    test('Should throws set item throws', () {
       mockSaveError();
 
       final future = sut.save(key: key, value: value);
@@ -60,7 +60,7 @@ void main() {
       verify(localStorage.deleteItem(key)).called(1);
     });
 
-    test('Should throws if delete item throws', () async {
+    test('Should throws if delete item throws', () {
       mockDeleteCacheError();
 
       final future = sut.delete(key);
