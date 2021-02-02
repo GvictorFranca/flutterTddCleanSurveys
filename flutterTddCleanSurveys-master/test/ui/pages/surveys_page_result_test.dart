@@ -7,7 +7,7 @@ import 'package:flutterClean/ui/pages/pages.dart';
 import 'package:flutterClean/ui/pages/survey_result/components/icons/icons.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:image_test_utils/image_test_utils.dart';
+import 'package:network_image_mock/network_image_mock.dart';
 import 'package:mockito/mockito.dart';
 
 class SurveyResultPresenterSpy extends Mock implements SurveyResultPresenter {}
@@ -58,25 +58,28 @@ void main() {
         ),
       ],
     );
-    await provideMockedNetworkImages(() async {
+    await mockNetworkImagesFor(() async {
       await tester.pumpWidget(surveysPage);
     });
   }
 
-  SurveyResultViewModel makeSurveyResult() =>
-      SurveyResultViewModel(surveyId: 'any_id', question: 'Question', answers: [
-        SurveyAnswerViewModel(
-          image: 'Image 0',
-          answer: 'Answer 0',
-          isCurrentAnswer: true,
-          percent: '60%',
-        ),
-        SurveyAnswerViewModel(
-          answer: 'Answer 1',
-          isCurrentAnswer: false,
-          percent: '40%',
-        ),
-      ]);
+  SurveyResultViewModel makeSurveyResult() => SurveyResultViewModel(
+        surveyId: 'any_id',
+        question: 'Question',
+        answers: [
+          SurveyAnswerViewModel(
+            image: 'Image 0',
+            answer: 'Answer 0',
+            isCurrentAnswer: true,
+            percent: '60%',
+          ),
+          SurveyAnswerViewModel(
+            answer: 'Answer 1',
+            isCurrentAnswer: false,
+            percent: '40%',
+          ),
+        ],
+      );
 
   tearDown(() {
     closeStreams();
@@ -142,7 +145,7 @@ void main() {
 
     surveysResultController.add(makeSurveyResult());
 
-    await provideMockedNetworkImages(() async {
+    await mockNetworkImagesFor(() async {
       await tester.pump();
     });
 

@@ -1,22 +1,20 @@
 import 'package:flutterClean/domain/helpers/helpers.dart';
 import 'package:flutterClean/domain/usecases/usecases.dart';
+import 'package:flutterClean/presentation/mixins/mixins.dart';
 import 'package:flutterClean/ui/helpers/helpers.dart';
 import 'package:flutterClean/ui/pages/pages.dart';
 
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 
-class GetxSurveyResultPresenter implements SurveyResultPresenter {
+class GetxSurveyResultPresenter
+    with LoadingManager, SessionManager
+    implements SurveyResultPresenter {
   final LoadSurveyResult loadSurveyResult;
   final String surveyId;
 
-  final _isLoading = true.obs;
-  final _isSessionExpired = RxBool();
   final _surveyResult = Rx<SurveyResultViewModel>();
 
-  Stream<bool> get isLoadingStream => _isLoading.stream;
-
-  Stream<bool> get isSessionExpiredStream => _isSessionExpired.stream;
   Stream<SurveyResultViewModel> get surveyResultStream => _surveyResult.stream;
 
   GetxSurveyResultPresenter({
@@ -25,7 +23,7 @@ class GetxSurveyResultPresenter implements SurveyResultPresenter {
   });
   Future<void> loadData() async {
     try {
-      _isLoading.value = true;
+      isLoading = true;
       final surveyResult =
           await loadSurveyResult.loadBySurvey(surveyId: surveyId);
       _surveyResult.value = SurveyResultViewModel(
@@ -39,10 +37,14 @@ class GetxSurveyResultPresenter implements SurveyResultPresenter {
                     isCurrentAnswer: answer.isCurrentAnswer,
                   ))
               .toList());
-    } on DomainError {
-      _surveyResult.subject.addError(UIError.unexpected.description);
+    } on DomainError catch (error) {
+      if (error == DomainError.accessDenied) {
+        isSessionExpired = true;
+      } else {
+        _surveyResult.subject.addError(UIError.unexpected.description);
+      }
     } finally {
-      _isLoading.value = false;
+      isLoading = false;
     }
   }
 }
