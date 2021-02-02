@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 class HttpClientSpy extends Mock implements HttpClient {}
 
 void main() {
-  RemoteLoadSurveysResult sut;
+  RemoteLoadSurveyResult sut;
   HttpClientSpy httpClient;
   String url;
   Map surveyResult;
@@ -51,7 +51,7 @@ void main() {
   setUp(() {
     url = faker.internet.httpUrl();
     httpClient = HttpClientSpy();
-    sut = RemoteLoadSurveysResult(url: url, httpClient: httpClient);
+    sut = RemoteLoadSurveyResult(url: url, httpClient: httpClient);
     mockHttpData(mockValidData());
   });
   test('Should call HttpClient with correct values', () async {

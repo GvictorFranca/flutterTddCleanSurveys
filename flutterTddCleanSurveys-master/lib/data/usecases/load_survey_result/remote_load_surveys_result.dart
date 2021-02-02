@@ -6,11 +6,11 @@ import 'package:flutterClean/domain/usecases/usecases.dart';
 
 import 'package:meta/meta.dart';
 
-class RemoteLoadSurveysResult implements LoadSurveyResult {
+class RemoteLoadSurveyResult implements LoadSurveyResult {
   final String url;
   final HttpClient httpClient;
 
-  RemoteLoadSurveysResult({@required this.url, @required this.httpClient});
+  RemoteLoadSurveyResult({@required this.url, @required this.httpClient});
 
   Future<SurveyResultEntity> loadBySurvey({String surveyId}) async {
     try {
