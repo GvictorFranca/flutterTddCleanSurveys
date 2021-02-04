@@ -11,11 +11,16 @@ import 'package:test/test.dart';
 
 class LoadSurveysResultSpy extends Mock implements LoadSurveyResult {}
 
+class SaveSurveysResultSpy extends Mock implements SaveSurveyResult {}
+
 void main() {
   GetxSurveyResultPresenter sut;
   LoadSurveysResultSpy loadSurveyResult;
-  SurveyResultEntity surveyResult;
+  SaveSurveysResultSpy saveSurveyResult;
+  SurveyResultEntity loadResult;
+  SurveyResultEntity saveResult;
   String surveyId;
+  String answer;
 
   SurveyResultEntity mockValidData() => SurveyResultEntity(
           surveyId: faker.guid.guid(),
@@ -33,87 +38,165 @@ void main() {
               percent: faker.randomGenerator.integer(100),
             ),
           ]);
-
+  // LOAD RESULT
   PostExpectation mockLoadSurveysResultCall() =>
       when(loadSurveyResult.loadBySurvey(surveyId: anyNamed('surveyId')));
 
   void mockLoadSurveyResult(SurveyResultEntity data) {
-    surveyResult = data;
-    mockLoadSurveysResultCall().thenAnswer((_) async => surveyResult);
+    loadResult = data;
+    mockLoadSurveysResultCall().thenAnswer((_) async => loadResult);
   }
 
-  void mockLoadSurveyResultError() =>
-      mockLoadSurveysResultCall().thenThrow(DomainError.unexpected);
+  void mockLoadSurveyResultError(DomainError error) =>
+      mockLoadSurveysResultCall().thenThrow(error);
 
-  void mockAccessDeniedError() =>
-      mockLoadSurveysResultCall().thenThrow(DomainError.accessDenied);
+  // SAVE RESULT
+
+  PostExpectation mockSaveSurveysResultCall() =>
+      when(saveSurveyResult.save(answer: anyNamed('answer')));
+
+  void mockSaveSurveyResult(SurveyResultEntity data) {
+    saveResult = data;
+    mockSaveSurveysResultCall().thenAnswer((_) async => saveResult);
+  }
+
+  void mockSaveSurveyResultError(DomainError error) =>
+      mockSaveSurveysResultCall().thenThrow(error);
 
   setUp(() {
-    faker.guid.guid();
+    answer = faker.lorem.sentence();
+    surveyId = faker.guid.guid();
     loadSurveyResult = LoadSurveysResultSpy();
+    saveSurveyResult = SaveSurveysResultSpy();
     sut = GetxSurveyResultPresenter(
       loadSurveyResult: loadSurveyResult,
+      saveSurveyResult: saveSurveyResult,
       surveyId: surveyId,
     );
     mockLoadSurveyResult(mockValidData());
+    mockSaveSurveyResult(mockValidData());
   });
 
-  test('Should call loadSurveyResult on loadData', () async {
-    await sut.loadData();
+  group('loadData', () {
+    test('Should call loadSurveyResult on loadData', () async {
+      await sut.loadData();
 
-    verify(loadSurveyResult.loadBySurvey(surveyId: surveyId)).called(1);
-  });
+      verify(loadSurveyResult.loadBySurvey(surveyId: surveyId)).called(1);
+    });
 
-  test('Should emits correct events on sucess', () async {
-    expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+    test('Should emits correct events on sucess', () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-    sut.surveyResultStream.listen(
-      expectAsync1(
-        (result) => expect(
-          result,
-          SurveyResultViewModel(
-            surveyId: surveyResult.surveyId,
-            question: surveyResult.question,
-            answers: [
-              SurveyAnswerViewModel(
-                image: surveyResult.answers[0].image,
-                answer: surveyResult.answers[0].answer,
-                isCurrentAnswer: surveyResult.answers[0].isCurrentAnswer,
-                percent: '${surveyResult.answers[0].percent}%',
-              ),
-              SurveyAnswerViewModel(
-                answer: surveyResult.answers[1].answer,
-                isCurrentAnswer: surveyResult.answers[1].isCurrentAnswer,
-                percent: '${surveyResult.answers[1].percent}%',
-              ),
-            ],
+      sut.surveyResultStream.listen(
+        expectAsync1(
+          (result) => expect(
+            result,
+            SurveyResultViewModel(
+              surveyId: loadResult.surveyId,
+              question: loadResult.question,
+              answers: [
+                SurveyAnswerViewModel(
+                  image: loadResult.answers[0].image,
+                  answer: loadResult.answers[0].answer,
+                  isCurrentAnswer: loadResult.answers[0].isCurrentAnswer,
+                  percent: '${loadResult.answers[0].percent}%',
+                ),
+                SurveyAnswerViewModel(
+                  answer: loadResult.answers[1].answer,
+                  isCurrentAnswer: loadResult.answers[1].isCurrentAnswer,
+                  percent: '${loadResult.answers[1].percent}%',
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
 
-    await sut.loadData();
+      await sut.loadData();
+    });
+    test('Should emits correct events on access Denied', () async {
+      mockLoadSurveyResultError(DomainError.accessDenied);
+
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.isSessionExpiredStream, emits(true));
+
+      await sut.loadData();
+    });
+
+    test('Should emits correct events on failure', () async {
+      mockLoadSurveyResultError(DomainError.unexpected);
+
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+
+      sut.surveyResultStream.listen(null,
+          onError: expectAsync1((error) => expect(
+                error,
+                UIError.unexpected.description,
+              )));
+
+      await sut.loadData();
+    });
   });
-  test('Should emits correct events on access Denied', () async {
-    mockAccessDeniedError();
 
-    expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
-    expectLater(sut.isSessionExpiredStream, emits(true));
+  group('save', () {
+    test('Should call SaveSurveyResult on save', () async {
+      await sut.save(answer: answer);
 
-    await sut.loadData();
-  });
+      verify(saveSurveyResult.save(answer: answer)).called(1);
+    });
 
-  test('Should emits correct events on failure', () async {
-    mockLoadSurveyResultError();
+    test('Should emits correct events on sucess', () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-    expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      sut.surveyResultStream.listen(
+        expectAsync1(
+          (result) => expect(
+            result,
+            SurveyResultViewModel(
+              surveyId: saveResult.surveyId,
+              question: saveResult.question,
+              answers: [
+                SurveyAnswerViewModel(
+                  image: saveResult.answers[0].image,
+                  answer: saveResult.answers[0].answer,
+                  isCurrentAnswer: saveResult.answers[0].isCurrentAnswer,
+                  percent: '${saveResult.answers[0].percent}%',
+                ),
+                SurveyAnswerViewModel(
+                  answer: saveResult.answers[1].answer,
+                  isCurrentAnswer: saveResult.answers[1].isCurrentAnswer,
+                  percent: '${saveResult.answers[1].percent}%',
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
 
-    sut.surveyResultStream.listen(null,
-        onError: expectAsync1((error) => expect(
-              error,
-              UIError.unexpected.description,
-            )));
+      await sut.save(answer: answer);
+    });
 
-    await sut.loadData();
+    test('Should emits correct events on access Denied', () async {
+      mockSaveSurveyResultError(DomainError.accessDenied);
+
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.isSessionExpiredStream, emits(true));
+
+      await sut.save(answer: answer);
+    });
+
+    test('Should emits correct events on failure', () async {
+      mockSaveSurveyResultError(DomainError.unexpected);
+
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+
+      sut.surveyResultStream.listen(null,
+          onError: expectAsync1((error) => expect(
+                error,
+                UIError.unexpected.description,
+              )));
+
+      await sut.save(answer: answer);
+    });
   });
 }

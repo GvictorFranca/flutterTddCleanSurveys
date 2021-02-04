@@ -10,6 +10,7 @@ import 'package:meta/meta.dart';
 class GetxSurveyResultPresenter extends GetxController
     with LoadingManager, SessionManager
     implements SurveyResultPresenter {
+  final SaveSurveyResult saveSurveyResult;
   final LoadSurveyResult loadSurveyResult;
   final String surveyId;
 
@@ -18,6 +19,7 @@ class GetxSurveyResultPresenter extends GetxController
   Stream<SurveyResultViewModel> get surveyResultStream => _surveyResult.stream;
 
   GetxSurveyResultPresenter({
+    @required this.saveSurveyResult,
     @required this.loadSurveyResult,
     @required this.surveyId,
   });
@@ -48,5 +50,29 @@ class GetxSurveyResultPresenter extends GetxController
     }
   }
 
-  Future<void> save({@required String answer}) {}
+  Future<void> save({@required String answer}) async {
+    try {
+      isLoading = true;
+      final surveyResult = await await saveSurveyResult.save(answer: answer);
+      _surveyResult.value = SurveyResultViewModel(
+          surveyId: surveyResult.surveyId,
+          question: surveyResult.question,
+          answers: surveyResult.answers
+              .map((answer) => SurveyAnswerViewModel(
+                    image: answer.image,
+                    answer: answer.answer,
+                    percent: '${answer.percent}%',
+                    isCurrentAnswer: answer.isCurrentAnswer,
+                  ))
+              .toList());
+    } on DomainError catch (error) {
+      if (error == DomainError.accessDenied) {
+        isSessionExpired = true;
+      } else {
+        _surveyResult.subject.addError(UIError.unexpected.description);
+      }
+    } finally {
+      isLoading = false;
+    }
+  }
 }
