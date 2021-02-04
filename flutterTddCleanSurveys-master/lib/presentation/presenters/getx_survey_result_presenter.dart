@@ -4,6 +4,7 @@ import 'package:flutterClean/domain/usecases/usecases.dart';
 import 'package:flutterClean/presentation/mixins/mixins.dart';
 import 'package:flutterClean/ui/helpers/helpers.dart';
 import 'package:flutterClean/ui/pages/pages.dart';
+import '../helpers/helpers.dart';
 
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
@@ -36,17 +37,7 @@ class GetxSurveyResultPresenter extends GetxController
     try {
       isLoading = true;
       final surveyResult = await action();
-      _surveyResult.value = SurveyResultViewModel(
-          surveyId: surveyResult.surveyId,
-          question: surveyResult.question,
-          answers: surveyResult.answers
-              .map((answer) => SurveyAnswerViewModel(
-                    image: answer.image,
-                    answer: answer.answer,
-                    percent: '${answer.percent}%',
-                    isCurrentAnswer: answer.isCurrentAnswer,
-                  ))
-              .toList());
+      _surveyResult.subject.add(surveyResult.toViewModel());
     } on DomainError catch (error) {
       if (error == DomainError.accessDenied) {
         isSessionExpired = true;
