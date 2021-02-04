@@ -328,7 +328,7 @@ void main() {
           body: '{"any_key":"any_value"}'));
     });
 
-    test('Should call post without body', () async {
+    test('Should call put without body', () async {
       await sut.request(url: url, method: 'put');
 
       verify(client.put(any, headers: anyNamed('headers')));
