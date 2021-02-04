@@ -2,6 +2,7 @@ import 'package:faker/faker.dart';
 import 'package:flutterClean/data/http/http.dart';
 import 'package:flutterClean/data/usecases/save_survey_result/save_survey_result.dart';
 import 'package:flutterClean/data/usecases/usecases.dart';
+import 'package:flutterClean/domain/helpers/helpers.dart';
 
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -20,6 +21,17 @@ void main() {
     httpClient = HttpClientSpy();
     sut = RemoteSaveSurveyResult(url: url, httpClient: httpClient);
   });
+
+  PostExpectation mockRequest() => when(httpClient.request(
+        url: anyNamed('url'),
+        method: anyNamed('method'),
+        body: anyNamed('body'),
+      ));
+
+  void mockHttpError(HttpError error) {
+    mockRequest().thenThrow(error);
+  }
+
   test('Should call HttpClient with correct values', () async {
     await sut.save(answer: answer);
 
@@ -32,5 +44,26 @@ void main() {
         },
       ),
     );
+  });
+
+  test('Should throw UnexpectedError if HttpClient return 404', () async {
+    mockHttpError(HttpError.notFound);
+
+    final future = sut.save(answer: answer);
+    expect(future, throwsA(DomainError.unexpected));
+  });
+
+  test('Should throw UnexpectedError if HttpClient return 500', () async {
+    mockHttpError(HttpError.serverError);
+
+    final future = sut.save(answer: answer);
+    expect(future, throwsA(DomainError.unexpected));
+  });
+
+  test('Should throw AccessDeniedError if HttpClient return 403', () async {
+    mockHttpError(HttpError.forbidden);
+
+    final future = sut.save(answer: answer);
+    expect(future, throwsA(DomainError.accessDenied));
   });
 }
