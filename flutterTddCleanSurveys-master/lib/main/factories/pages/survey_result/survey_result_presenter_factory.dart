@@ -5,6 +5,7 @@ import 'package:flutterClean/ui/pages/pages.dart';
 SurveyResultPresenter makeGetxSurveysResultPresenter(String surveyId) {
   return GetxSurveyResultPresenter(
     loadSurveyResult: makeRemoteLoadSurveyResultWithLocalFallback(surveyId),
+    saveSurveyResult: makeRemoteSaveSurveyResult(surveyId),
     surveyId: surveyId,
   );
 }
